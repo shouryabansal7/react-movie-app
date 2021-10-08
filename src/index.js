@@ -10,18 +10,18 @@ const store  = createStore(movies);
 
 
 console.log('store',store);
-console.log('Before STATE',store.getState());
+// console.log('Before STATE',store.getState());
 
-store.dispatch({
-  type: 'ADD_MOVIES',
-  movies: [{name: 'Superman'}]
-});
+// store.dispatch({
+//   type: 'ADD_MOVIES',
+//   movies: [{name: 'Superman'}]
+// });
 
-console.log('After STATE',store.getState());
+// console.log('After STATE',store.getState());
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App store={store}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
