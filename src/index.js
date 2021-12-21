@@ -1,11 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {createStore, applyMiddleware} from 'redux';
+import React from "react";
+import ReactDOM from "react-dom";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
-import './index.css';
-import App from './components/App';
-import movies from './reducer'
-import rootReducer from './reducer';
+import "./index.css";
+import App from "./components/App";
+
+import rootReducer from "./reducer";
 
 //function logger(obj, next,action)
 //logger(obj)(next)(action);
@@ -21,16 +22,28 @@ import rootReducer from './reducer';
 // }
 
 //2nd way to write
-const logger = ({dispatch, getState}) => (next) => (action) =>{
-  //middleware code
-  console.log('ACTION_TYPE = ',action.type);
-  next(action);
-}
+const logger =
+  ({ dispatch, getState }) =>
+  (next) =>
+  (action) => {
+    //middleware code
+    if (typeof action !== "function") {
+      console.log("ACTION_TYPE = ", action.type);
+    }
+    next(action);
+  };
 
-const store  = createStore(rootReducer, applyMiddleware(logger));
+// const thunk = ({dispatch, getState}) => (next) => (action) =>{
+//   if(typeof action === 'function'){
+//     action(dispatch);
+//     return;
+//   }
+//   next(action);
+// }
 
+const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 
-console.log('store',store);
+console.log("store", store);
 // console.log('Before STATE',store.getState());
 
 // store.dispatch({
@@ -42,8 +55,7 @@ console.log('store',store);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App store={store}/>
+    <App store={store} />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
-
