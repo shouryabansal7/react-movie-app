@@ -4,9 +4,10 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 
 import "./index.css";
-import App from "./components/App";
 
 import rootReducer from "./reducer";
+import { createContext } from "react";
+import AppWrapper from "./components/App";
 
 //function logger(obj, next,action)
 //logger(obj)(next)(action);
@@ -44,6 +45,20 @@ const logger =
 const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 
 console.log("store", store);
+export const StoreContext = createContext();
+
+console.log("StoreContext", StoreContext);
+
+class Provider extends React.Component {
+  render() {
+    const { store } = this.props;
+    return (
+      <StoreContext.Provider value={store}>
+        {this.props.children}
+      </StoreContext.Provider>
+    );
+  }
+}
 // console.log('Before STATE',store.getState());
 
 // store.dispatch({
@@ -55,7 +70,10 @@ console.log("store", store);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App store={store} />
+    <Provider store={store}>
+      <AppWrapper />
+    </Provider>
+    ,
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -1,12 +1,14 @@
 import React from "react";
 import { data } from "../data";
-import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
 import { addMovies, setShowFavourites } from "../action";
+import { StoreContext } from "..";
+import NavbarWrapper from "./Navbar";
 
 class App extends React.Component {
   componentDidMount() {
     const { store } = this.props;
+    console.log(store);
     store.subscribe(() => {
       console.log("Updating");
       this.forceUpdate();
@@ -41,9 +43,10 @@ class App extends React.Component {
     console.log("RENDER", this.props.store.getState());
 
     const displayMovies = showFavourites ? favourites : list;
+
     return (
       <div className="App">
-        <Navbar dispatch={this.props.store.dispatch} search={search} />
+        <NavbarWrapper search={search} />
         <div className="main">
           <div className="tabs">
             <div
@@ -82,4 +85,14 @@ class App extends React.Component {
   }
 }
 
-export default App;
+class AppWrapper extends React.Component {
+  render() {
+    return (
+      <StoreContext.Consumer>
+        {(store) => <App store={store} />}
+      </StoreContext.Consumer>
+    );
+  }
+}
+
+export default AppWrapper;
