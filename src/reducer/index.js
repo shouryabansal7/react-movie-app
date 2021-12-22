@@ -24,7 +24,7 @@ const initialSearchState = {
 //   search: initialSearchState,
 // };
 
-export function movie(state = initialMovieState, action) {
+export function movies(state = initialMovieState, action) {
   console.log("MOVIES REDUCER");
   //we generally use switch case in react
   switch (action.type) {
@@ -40,7 +40,7 @@ export function movie(state = initialMovieState, action) {
       };
     case REMOVE_FAVOURITES:
       const filteredArray = state.favourites.filter(
-        (movie) => movie.title !== action.movie.title
+        (movie) => movie.Title !== action.movie.Title
       );
       return {
         ...state,
@@ -88,6 +88,6 @@ export function search(state = initialSearchState, action) {
 // }
 
 export default combineReducers({
-  movies: movie,
-  search: search,
+  movies,
+  search,
 });
